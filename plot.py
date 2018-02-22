@@ -33,6 +33,8 @@ for oc in sorted(set(ocname)):
 	if len(sys.argv)>1 and (oc not in sys.argv):
 		continue
 
+	print 'Now generating figure for',oc
+
 	# Subset data for each individual OC:
 	RA = ra[ocname==oc]
 	DEC = dec[ocname==oc]
@@ -147,4 +149,5 @@ for oc in sorted(set(ocname)):
 
 
 	plt.savefig( oc+'_6panels.png' )
+	print '   figure saved as',oc+'_6panels.png'
 
