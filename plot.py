@@ -1,6 +1,6 @@
 # T. C.-G.	Feb 22nd 2018
 # start with:	python plot.py
-# to produce figures for all OCs, or with:	python plot.py ASCC_113 Stock_2
+# to produce figures for all OCs, or with:	python plot.py  Alessi_2 ASCC_113 IC_4756
 # to produce figures for chosen OCs only.
 
 import numpy as np
@@ -25,6 +25,7 @@ jmag = hdul[1].data['Jmag']
 kmag = hdul[1].data['Kmag']
 proba = hdul[1].data['finalProba']
 ocname = hdul[1].data['ocname']
+pmused = hdul[1].data['PMused']
 
 
 
@@ -62,12 +63,18 @@ for oc in sorted(set(ocname)):
 	plt.minorticks_on()
 
 	#	PMRA PMDEC
-	plt.subplot(232); plt.title('TGAS proper motions')
+	plt.subplot(232)
+	if pmused[ocname==oc][0]=='T':
+		plt.title('TGAS proper motions\nwere used for membership')
+	else:
+		plt.title('UCAC4 proper motions\nwere used for membership')
+
+
 	plt.scatter( PMRA , PMDEC , c=PROBA , edgecolor='none' , vmin=0 , vmax=1 , cmap=cmap)
 	for i in range(len(PMRA)):
 		if PROBA[i]>0.1:
 			plt.errorbar( PMRA[i] , PMDEC[i] , xerr=ePMRA[i] , yerr=ePMDEC[i] , fmt=',', color=cmap(PROBA[i]) , zorder=1 )
-	plt.xlabel('pmra [mas/yr]'); plt.ylabel('pmdec [mas/yr]')
+	plt.xlabel('TGAS pmra [mas/yr]'); plt.ylabel('TGAS pmdec [mas/yr]')
 	plt.xlim( min(PMRA[PROBA>0]) - 5 , max(PMRA[PROBA>0]) + 5); plt.ylim( min(PMDEC[PROBA>0]) - 5 , max(PMDEC[PROBA>0]) + 5)
 	plt.minorticks_on()
 
@@ -90,7 +97,7 @@ for oc in sorted(set(ocname)):
 		theta=np.degrees( np.arctan( maxvector[1] / maxvector[0] ) )
 		return a,b,theta
 	ax=fig.add_subplot(233)
-	plt.xlabel('pmra [mas/yr]'); plt.ylabel('pmdec [mas/yr]')
+	plt.xlabel('TGAS pmra [mas/yr]'); plt.ylabel('TGAS pmdec [mas/yr]')
 	plt.xlim( min(PMRA[PROBA>0]) - 5 , max(PMRA[PROBA>0]) + 5); plt.ylim( min(PMDEC[PROBA>0]) - 5 , max(PMDEC[PROBA>0]) + 5)
 	plt.minorticks_on()
 	#build covariance matrix and plot corresponding ellipse for each point
